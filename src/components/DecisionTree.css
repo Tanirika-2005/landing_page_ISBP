@@ -1,0 +1,171 @@
+.dt-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Made it taller so the graph scales up nicely */
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible; /* Let tooltips and pills bleed out naturally */
+}
+
+.dt-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Base paths */
+.dt-path {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.15); /* Darker structural line */
+  stroke-width: 1.5;
+  transition: stroke 0.3s;
+}
+
+.dt-path.active {
+  stroke: rgba(0, 0, 0, 0.3); /* Even stronger when active */
+  stroke-width: 2;
+}
+
+/* Stark Black Energy Pulse Flow */
+.dt-path-glow {
+  fill: none;
+  stroke: #000000; 
+  stroke-width: 2.5;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dt-path-glow.active {
+  animation: pulseFlow 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  opacity: 1;
+}
+
+@keyframes pulseFlow {
+  0% { stroke-dashoffset: 600; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* Data Packets */
+.dt-data-packet {
+  opacity: 0.5;
+}
+
+/* Hyper-Premium Modern Labels */
+.dt-pill {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.12); /* Slightly darker border */
+  border-radius: 6px; 
+  padding: 0.6rem 1.2rem; /* Increased padding */
+  font-family: var(--font-main);
+  font-weight: 600; /* Bolder font */
+  font-size: 0.85rem; /* Increased font size */
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  cursor: crosshair;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.dt-pill:hover, .dt-pill.active {
+  background: #ffffff;
+  border-color: #000000; /* Stark black border */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transform: translate(-50%, -50%) scale(1.04);
+  color: #000000;
+  font-weight: 700;
+}
+
+/* Dynamic Tooltip */
+.dt-tooltip {
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000000; /* Stark black */
+  color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 8px; /* Matching sharp corners */
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  max-width: 400px;
+  line-height: 1.6;
+  animation: floatUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes floatUp {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.dt-tooltip-icon {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+/* Caption and Live Badge */
+.dt-caption {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.dt-caption-badge {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.65rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #ef4444; /* Alert red */
+  border-radius: 50%;
+  animation: livePulse 2s infinite;
+}
+
+@keyframes livePulse {
+  0% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { opacity: 0.5; transform: scale(1.1); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+  100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
